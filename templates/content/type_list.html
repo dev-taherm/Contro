@@ -1,0 +1,44 @@
+{% extends "iam/base.html" %}
+
+{% block title %}Content Types · Contro{% endblock %}
+
+{% block content %}
+  <div class="nav">
+    <div>
+      <div class="title">Content Types</div>
+      <div class="subtitle">Define schemas for your API.</div>
+    </div>
+    <a class="button" href="{% url 'content:type_create' %}">New Content Type</a>
+  </div>
+
+  <div class="card">
+    {% if content_types %}
+      <table style="width:100%; border-collapse: collapse;">
+        <thead>
+          <tr style="text-align:left; border-bottom: 1px solid #1f2937;">
+            <th style="padding: 8px;">Name</th>
+            <th style="padding: 8px;">Slug</th>
+            <th style="padding: 8px;">Status</th>
+            <th style="padding: 8px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ct in content_types %}
+            <tr style="border-bottom: 1px solid #1f2937;">
+              <td style="padding: 8px;">{{ ct.name }}</td>
+              <td style="padding: 8px;">{{ ct.slug }}</td>
+              <td style="padding: 8px;">{% if ct.is_active %}Active{% else %}Inactive{% endif %}</td>
+              <td style="padding: 8px;">
+                <a href="{% url 'content:type_edit' ct.pk %}">Edit</a> ·
+                <a href="{% url 'content:field_list' ct.pk %}">Fields</a> ·
+                <a href="{% url 'content:entry_list' ct.pk %}">Entries</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No content types yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

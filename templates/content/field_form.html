@@ -1,0 +1,71 @@
+{% extends "iam/base.html" %}
+
+{% block title %}{% if mode == "create" %}New{% else %}Edit{% endif %} Field · {{ content_type.name }} · Contro{% endblock %}
+
+{% block content %}
+  <div class="nav">
+    <div>
+      <div class="title">{% if mode == "create" %}New{% else %}Edit{% endif %} Field</div>
+      <div class="subtitle">Content type: {{ content_type.name }}</div>
+    </div>
+    <a class="button" href="{% url 'content:field_list' content_type.pk %}">Back to fields</a>
+  </div>
+
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="form-row">
+        <label for="id_name">Name</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+      <div class="form-row">
+        <label for="id_slug">Slug</label>
+        {{ form.slug }}
+        {{ form.slug.errors }}
+      </div>
+      <div class="form-row">
+        <label for="id_field_type">Field type</label>
+        {{ form.field_type }}
+        {{ form.field_type.errors }}
+      </div>
+      <div class="form-row">
+        <label for="id_required">Required</label>
+        {{ form.required }}
+        {{ form.required.errors }}
+      </div>
+      <div class="form-row">
+        <label for="id_unique">Unique</label>
+        {{ form.unique }}
+        {{ form.unique.errors }}
+      </div>
+      <div class="form-row">
+        <label for="id_default_value">Default value (JSON)</label>
+        {{ form.default_value }}
+        {{ form.default_value.errors }}
+      </div>
+      <div class="form-row">
+        <label for="id_metadata">Metadata (JSON)</label>
+        {{ form.metadata }}
+        {{ form.metadata.errors }}
+      </div>
+      <div class="form-row">
+        <label for="id_relation_target">Relation target</label>
+        {{ form.relation_target }}
+        {{ form.relation_target.errors }}
+      </div>
+      <div class="form-row">
+        <label for="id_related_name">Related name</label>
+        {{ form.related_name }}
+        {{ form.related_name.errors }}
+      </div>
+      <div class="form-row">
+        <label for="id_order">Order</label>
+        {{ form.order }}
+        {{ form.order.errors }}
+      </div>
+      <button class="button" type="submit">Save</button>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django migrations
+*/migrations/
+!*/migrations/__init__.py
+
+# Environment
+.env
+.venv/
+ENV/
+env/
+*.env
+
+# SQLite database
+db.sqlite3
+
+# Media files (user uploads)
+media/
+
+# Static files (can be regenerated)
+staticfiles/
+static/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# MacOS files
+.DS_Store
+
+# Logs
+*.log
+
+# Pytest cache
+.pytest_cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Node modules (if using front-end tools)
+node_modules/
+
+# JetBrains IDEs
+*.iml

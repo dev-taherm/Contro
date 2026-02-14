@@ -1,0 +1,48 @@
+{% extends "iam/base.html" %}
+
+{% block title %}Fields · {{ content_type.name }} · Contro{% endblock %}
+
+{% block content %}
+  <div class="nav">
+    <div>
+      <div class="title">Fields for {{ content_type.name }}</div>
+      <div class="subtitle">Define the shape of your content entries.</div>
+    </div>
+    <a class="button" href="{% url 'content:field_create' content_type.pk %}">New Field</a>
+  </div>
+
+  <div class="card">
+    {% if fields %}
+      <table style="width:100%; border-collapse: collapse;">
+        <thead>
+          <tr style="text-align:left; border-bottom: 1px solid #1f2937;">
+            <th style="padding: 8px;">Name</th>
+            <th style="padding: 8px;">Slug</th>
+            <th style="padding: 8px;">Type</th>
+            <th style="padding: 8px;">Required</th>
+            <th style="padding: 8px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for field in fields %}
+            <tr style="border-bottom: 1px solid #1f2937;">
+              <td style="padding: 8px;">{{ field.name }}</td>
+              <td style="padding: 8px;">{{ field.slug }}</td>
+              <td style="padding: 8px;">{{ field.get_field_type_display }}</td>
+              <td style="padding: 8px;">{% if field.required %}Yes{% else %}No{% endif %}</td>
+              <td style="padding: 8px;">
+                <a href="{% url 'content:field_edit' content_type.pk field.pk %}">Edit</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No fields yet.</p>
+    {% endif %}
+  </div>
+
+  <div style="margin-top: 16px;">
+    <a href="{% url 'content:type_edit' content_type.pk %}">Back to content type</a>
+  </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "iam/base.html" %}
+
+{% block title %}Dashboard · Contro{% endblock %}
+
+{% block content %}
+  <div class="nav">
+    <div>
+      <div class="title">Contro Dashboard</div>
+      <div class="subtitle">Welcome back, {{ request.user.get_full_name }}</div>
+    </div>
+    <form action="{% url 'iam:logout' %}" method="post">
+      {% csrf_token %}
+      <button class="button danger" type="submit">Logout</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="title">Quick Actions</div>
+    <div class="subtitle">Manage schemas and content.</div>
+    <p><a href="{% url 'content:type_list' %}">Content Types</a></p>
+  </div>
+{% endblock %}
