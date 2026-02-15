@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
@@ -16,6 +16,8 @@ def login_view(request):
     if request.method == "POST" and form.is_valid():
         email = form.cleaned_data["email"]
         password = form.cleaned_data["password"]
+        UserModel = get_user_model()
+        email = UserModel.objects.normalize_email(email)
         user = authenticate(request, username=email, password=password)
         if user:
             login(request, user)

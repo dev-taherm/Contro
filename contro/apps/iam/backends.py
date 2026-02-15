@@ -9,6 +9,9 @@ from contro.apps.iam.models import ObjectPermission, Role
 class RolePermissionBackend:
     """Adds role-based and object-level permissions on top of Django's auth backend."""
 
+    def authenticate(self, request, **credentials):
+        return None
+
     def has_perm(self, user_obj, perm, obj=None):
         if not user_obj or not user_obj.is_active:
             return False
