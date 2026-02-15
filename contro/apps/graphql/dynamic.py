@@ -10,6 +10,7 @@ from contro.apps.content.models import ContentFieldDefinition, ContentTypeDefini
 from contro.apps.content.services.schema import get_dynamic_model
 from contro.apps.iam.authentication import ApiTokenCredentials
 from contro.apps.iam.services.tokens import token_has_permission
+from contro.apps.media.models import MediaFile
 
 
 def build_schema() -> graphene.Schema:
@@ -17,15 +18,14 @@ def build_schema() -> graphene.Schema:
         content_types = ContentTypeDefinition.objects.filter(is_active=True).prefetch_related("fields")
     except OperationalError:
         return graphene.Schema(query=_fallback_query())
-    if not content_types.exists():
-        return graphene.Schema(query=_fallback_query())
+    media_type = _build_graphene_type(MediaFile)
 
     type_map = {}
     for content_type in content_types:
         model = get_dynamic_model(content_type)
         type_map[content_type.slug] = _build_graphene_type(model)
 
-    query_cls = _build_query(content_types, type_map)
+    query_cls = _build_query(content_types, type_map, media_type)
     mutation_cls = _build_mutation(content_types, type_map)
 
     return graphene.Schema(query=query_cls, mutation=mutation_cls)
@@ -49,7 +49,7 @@ def _build_graphene_type(model):
     return type(f"{model.__name__}Type", (DjangoObjectType,), {"Meta": Meta})
 
 
-def _build_query(content_types, type_map):
+def _build_query(content_types, type_map, media_type):
     attrs = {}
     for content_type in content_types:
         model = get_dynamic_model(content_type)
@@ -62,6 +62,11 @@ def _build_query(content_types, type_map):
 
         attrs[f"resolve_{list_name}"] = _make_list_resolver(model)
         attrs[f"resolve_{detail_name}"] = _make_detail_resolver(model)
+
+    attrs["media_files"] = graphene.List(media_type)
+    attrs["media_file"] = graphene.Field(media_type, id=graphene.ID(required=True))
+    attrs["resolve_media_files"] = _make_list_resolver(MediaFile)
+    attrs["resolve_media_file"] = _make_detail_resolver(MediaFile)
 
     return type("Query", (graphene.ObjectType,), attrs)
 
@@ -172,6 +177,10 @@ def _graphene_field_for_def(field_def: ContentFieldDefinition, force_optional: b
         return graphene.Boolean(required=required)
     if field_def.field_type == ContentFieldDefinition.FIELD_DATE:
         return graphene.Date(required=required)
+    if field_def.field_type == ContentFieldDefinition.FIELD_MEDIA:
+        return graphene.ID(required=required)
+    if field_def.field_type == ContentFieldDefinition.FIELD_MEDIA_M2M:
+        return graphene.List(graphene.ID, required=required)
     if field_def.field_type == ContentFieldDefinition.FIELD_FK:
         return graphene.ID(required=required)
     if field_def.field_type == ContentFieldDefinition.FIELD_M2M:
@@ -188,7 +197,7 @@ def _attach_base_arguments(arguments, model, force_optional: bool):
 
 def _make_list_resolver(model):
     def resolver(root, info):
-        _require_perm(info, f"content.view_{model._meta.model_name}")
+        _require_perm(info, _perm_for_model("view", model))
         return model.objects.all()
 
     return resolver
@@ -197,7 +206,7 @@ def _make_list_resolver(model):
 def _make_detail_resolver(model):
     def resolver(root, info, id):
         instance = model.objects.get(pk=id)
-        _require_perm(info, f"content.view_{model._meta.model_name}", obj=instance)
+        _require_perm(info, _perm_for_model("view", model), obj=instance)
         return instance
 
     return resolver
@@ -215,6 +224,10 @@ def _require_perm(info, perm: str, obj=None):
         raise GraphQLError("API token not authorized")
 
 
+def _perm_for_model(action: str, model) -> str:
+    return f"{model._meta.app_label}.{action}_{model._meta.model_name}"
+
+
 def _split_relations(model, field_defs, data):
     values = {}
     m2m_values = {}
@@ -222,9 +235,9 @@ def _split_relations(model, field_defs, data):
     for field_def in field_defs:
         if field_def.slug not in data:
             continue
-        if field_def.field_type == ContentFieldDefinition.FIELD_M2M:
+        if field_def.field_type in {ContentFieldDefinition.FIELD_M2M, ContentFieldDefinition.FIELD_MEDIA_M2M}:
             m2m_values[field_def.slug] = data[field_def.slug]
-        elif field_def.field_type == ContentFieldDefinition.FIELD_FK:
+        elif field_def.field_type in {ContentFieldDefinition.FIELD_FK, ContentFieldDefinition.FIELD_MEDIA}:
             values[f"{field_def.slug}_id"] = data[field_def.slug]
         else:
             values[field_def.slug] = data[field_def.slug]

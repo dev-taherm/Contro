@@ -106,6 +106,8 @@ class ContentFieldDefinition(models.Model):
     FIELD_BOOLEAN = "boolean"
     FIELD_DATE = "date"
     FIELD_SLUG = "slug"
+    FIELD_MEDIA = "media"
+    FIELD_MEDIA_M2M = "media_m2m"
     FIELD_FK = "fk"
     FIELD_M2M = "m2m"
 
@@ -115,6 +117,8 @@ class ContentFieldDefinition(models.Model):
         (FIELD_BOOLEAN, "Boolean"),
         (FIELD_DATE, "Date"),
         (FIELD_SLUG, "Slug"),
+        (FIELD_MEDIA, "Media (Single)"),
+        (FIELD_MEDIA_M2M, "Media (Multiple)"),
         (FIELD_FK, "Foreign Key"),
         (FIELD_M2M, "Many to Many"),
     )
@@ -178,6 +182,8 @@ class ContentFieldDefinition(models.Model):
             raise ValidationError("Relation target is required for FK and M2M fields.")
         if self.field_type not in {self.FIELD_FK, self.FIELD_M2M} and self.relation_target:
             raise ValidationError("Relation target can only be set for FK and M2M fields.")
+        if self.field_type in {self.FIELD_MEDIA, self.FIELD_MEDIA_M2M} and self.relation_target:
+            raise ValidationError("Media fields do not use relation targets.")
 
     def save(self, *args, **kwargs):
         self.full_clean()

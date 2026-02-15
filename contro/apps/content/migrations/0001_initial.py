@@ -43,6 +43,8 @@ class Migration(migrations.Migration):
                             ("boolean", "Boolean"),
                             ("date", "Date"),
                             ("slug", "Slug"),
+                            ("media", "Media (Single)"),
+                            ("media_m2m", "Media (Multiple)"),
                             ("fk", "Foreign Key"),
                             ("m2m", "Many to Many"),
                         ],

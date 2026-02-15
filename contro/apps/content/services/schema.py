@@ -73,6 +73,22 @@ def _build_field(field_def: ContentFieldDefinition):
         allow_unicode = bool(field_def.metadata.get("allow_unicode", False))
         return models.SlugField(max_length=int(max_length), allow_unicode=allow_unicode, **kwargs)
 
+    if field_def.field_type == ContentFieldDefinition.FIELD_MEDIA:
+        return models.ForeignKey(
+            "media.MediaFile",
+            on_delete=models.SET_NULL,
+            null=True,
+            blank=not field_def.required,
+            related_name=f"{field_def.content_type.slug}_{field_def.slug}_set",
+        )
+
+    if field_def.field_type == ContentFieldDefinition.FIELD_MEDIA_M2M:
+        return models.ManyToManyField(
+            "media.MediaFile",
+            related_name=f"{field_def.content_type.slug}_{field_def.slug}_set",
+            blank=not field_def.required,
+        )
+
     if field_def.field_type == ContentFieldDefinition.FIELD_FK:
         target = _relation_target_label(field_def)
         related_name = _resolve_related_name(field_def)

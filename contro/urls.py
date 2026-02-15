@@ -9,6 +9,7 @@ urlpatterns = [
     path("api/", include("contro.apps.api.urls")),
     path("iam/", include("contro.apps.iam.urls")),
     path("content/", include("contro.apps.content.urls")),
+    path("media/", include("contro.apps.media.urls")),
     path("graphql/", DynamicGraphQLView.as_view(graphiql=settings.DEBUG)),
 ]
 
