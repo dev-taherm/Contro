@@ -6,97 +6,346 @@
     <title>{% block title %}Contro Admin{% endblock %}</title>
     <style>
       :root {
-        --bg: #0f172a;
-        --panel: #111827;
-        --text: #e2e8f0;
-        --muted: #94a3b8;
-        --accent: #22c55e;
+        --bg: #0b1220;
+        --surface: #101a2b;
+        --panel: #151f33;
+        --text: #e6ecf5;
+        --muted: #9fb1c6;
+        --accent: #6ee7b7;
+        --accent-strong: #10b981;
         --danger: #f87171;
+        --warning: #fbbf24;
+        --border: #24324a;
+        --shadow: 0 18px 50px rgba(7, 10, 18, 0.45);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --space-1: 8px;
+        --space-2: 16px;
+        --space-3: 24px;
+        --space-4: 32px;
+        --space-5: 40px;
       }
+
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f5f7fb;
+          --surface: #ffffff;
+          --panel: #f1f4f9;
+          --text: #111827;
+          --muted: #5a6b86;
+          --accent: #0ea5e9;
+          --accent-strong: #0284c7;
+          --danger: #dc2626;
+          --warning: #d97706;
+          --border: #d6dde8;
+          --shadow: 0 12px 36px rgba(15, 23, 42, 0.12);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
-        font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
-        background: radial-gradient(circle at top, #1f2937, var(--bg));
+        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 40%),
+          radial-gradient(circle at top right, rgba(16, 185, 129, 0.18), transparent 45%),
+          var(--bg);
         color: var(--text);
         min-height: 100vh;
       }
-      .container {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 32px 20px;
+
+      a {
+        color: inherit;
+        text-decoration: none;
       }
-      .card {
-        background: var(--panel);
-        border: 1px solid #1f2937;
-        border-radius: 14px;
-        padding: 24px;
-        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.35);
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        min-height: 100vh;
       }
-      .title {
-        font-size: 28px;
-        margin-bottom: 8px;
+
+      .sidebar {
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+        padding: var(--space-4) var(--space-3);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
       }
-      .subtitle {
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        font-size: 18px;
+      }
+
+      .brand-badge {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        display: grid;
+        place-items: center;
+        color: #031314;
+        font-weight: 800;
+      }
+
+      .nav-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+      }
+
+      .nav-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
         color: var(--muted);
-        margin-bottom: 24px;
+        margin-bottom: var(--space-1);
       }
-      .nav {
+
+      .nav-link {
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        font-weight: 600;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 24px;
+        gap: var(--space-1);
+        transition: background 0.2s ease;
       }
-      .nav a {
-        color: var(--text);
-        text-decoration: none;
+
+      .nav-link:hover {
+        background: var(--panel);
+      }
+
+      .nav-pill {
+        background: rgba(16, 185, 129, 0.16);
+        color: var(--accent);
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 999px;
+      }
+
+      .main {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .topbar {
+        padding: var(--space-3) var(--space-4);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        background: rgba(16, 24, 39, 0.4);
+        backdrop-filter: blur(12px);
+      }
+
+      .topbar-title {
+        font-size: 20px;
         font-weight: 600;
       }
+
+      .topbar-actions {
+        display: flex;
+        gap: var(--space-2);
+        align-items: center;
+      }
+
       .button {
         background: var(--accent);
-        color: #052e16;
+        color: #041011;
         border: none;
         padding: 10px 16px;
-        border-radius: 8px;
+        border-radius: var(--radius-sm);
         font-weight: 600;
         cursor: pointer;
       }
+
+      .button.secondary {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
       .button.danger {
         background: var(--danger);
-        color: #3f1515;
+        color: #2b0b0b;
       }
+
+      .content {
+        padding: var(--space-4);
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: var(--space-3);
+        box-shadow: var(--shadow);
+      }
+
+      .card-grid {
+        display: grid;
+        gap: var(--space-3);
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-3);
+      }
+
+      .kpi {
+        padding: var(--space-3);
+        border-radius: var(--radius-md);
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+
+      .kpi-label {
+        color: var(--muted);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .kpi-value {
+        font-size: 28px;
+        font-weight: 700;
+        margin-top: var(--space-1);
+      }
+
+      .subtitle {
+        color: var(--muted);
+        margin-top: var(--space-1);
+      }
+
       .form-row {
-        margin-bottom: 16px;
+        margin-bottom: var(--space-2);
       }
+
       label {
         display: block;
         margin-bottom: 6px;
         font-size: 14px;
         color: var(--muted);
       }
-      input {
+
+      input,
+      textarea,
+      select {
         width: 100%;
         padding: 10px 12px;
-        border-radius: 8px;
-        border: 1px solid #334155;
-        background: #0b1120;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        background: rgba(5, 10, 20, 0.25);
         color: var(--text);
       }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: var(--space-1);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      details {
+        background: var(--surface);
+        border-radius: var(--radius-md);
+        padding: var(--space-2);
+        border: 1px solid var(--border);
+      }
+
       .error {
         color: var(--danger);
         margin: 8px 0 0;
       }
+
+      @media (max-width: 960px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          flex-direction: row;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: var(--space-2);
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="container">
-      {% if messages %}
-        <div class="card" style="margin-bottom: 16px;">
-          {% for message in messages %}
-            <div class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
-          {% endfor %}
+    {% block shell %}
+      <div class="app-shell">
+        <aside class="sidebar">
+          <div class="brand">
+            <div class="brand-badge">C</div>
+            Contro
+          </div>
+
+          <div class="nav-group">
+            <div class="nav-label">Overview</div>
+            <a class="nav-link" href="{% url 'iam:dashboard' %}">Dashboard</a>
+            <a class="nav-link" href="{% url 'content:type_list' %}">
+              Content Types
+              <span class="nav-pill">Schemas</span>
+            </a>
+            <a class="nav-link" href="{% url 'media:list' %}">Media Library</a>
+          </div>
+
+          <div class="nav-group">
+            <div class="nav-label">System</div>
+            <a class="nav-link" href="/admin/">Django Admin</a>
+            <form method="post" action="{% url 'iam:logout' %}">
+              {% csrf_token %}
+              <button class="button secondary" type="submit" style="width: 100%;">Logout</button>
+            </form>
+          </div>
+        </aside>
+
+        <div class="main">
+          <div class="topbar">
+            <div class="topbar-title">{% block page_title %}Dashboard{% endblock %}</div>
+            <div class="topbar-actions">
+              {% block top_actions %}{% endblock %}
+            </div>
+          </div>
+
+          <main class="content">
+            {% if messages %}
+              <div class="card" style="margin-bottom: var(--space-3);">
+                {% for message in messages %}
+                  <div class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+          </main>
         </div>
-      {% endif %}
-      {% block content %}{% endblock %}
-    </div>
+      </div>
+    {% endblock %}
   </body>
 </html>

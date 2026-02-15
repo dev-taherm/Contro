@@ -2,33 +2,39 @@
 
 {% block title %}Login · Contro{% endblock %}
 
-{% block content %}
-  <div class="card" style="max-width: 460px; margin: 0 auto;">
-    <div class="title">Sign in</div>
-    <div class="subtitle">Access the CMS dashboard.</div>
+{% block shell %}
+  <div style="min-height: 100vh; display: grid; place-items: center; padding: 32px;">
+    <div class="card" style="max-width: 480px; width: 100%;">
+      <div class="brand" style="margin-bottom: 16px;">
+        <div class="brand-badge">C</div>
+        Contro
+      </div>
+      <div class="topbar-title">Sign in</div>
+      <div class="subtitle">Access the CMS dashboard.</div>
 
-    <form method="post" novalidate>
-      {% csrf_token %}
-      <div class="form-row">
-        <label for="id_email">Email</label>
-        {{ form.email }}
-        {% if form.email.errors %}
-          <div class="error">{{ form.email.errors.0 }}</div>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-row">
+          <label for="id_email">Email</label>
+          {{ form.email }}
+          {% if form.email.errors %}
+            <div class="error">{{ form.email.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <div class="form-row">
+          <label for="id_password">Password</label>
+          {{ form.password }}
+          {% if form.password.errors %}
+            <div class="error">{{ form.password.errors.0 }}</div>
+          {% endif %}
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="error">{{ message }}</div>
+          {% endfor %}
         {% endif %}
-      </div>
-      <div class="form-row">
-        <label for="id_password">Password</label>
-        {{ form.password }}
-        {% if form.password.errors %}
-          <div class="error">{{ form.password.errors.0 }}</div>
-        {% endif %}
-      </div>
-      {% if messages %}
-        {% for message in messages %}
-          <div class="error">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-      <button class="button" type="submit">Login</button>
-    </form>
+        <button class="button" type="submit">Login</button>
+      </form>
+    </div>
   </div>
 {% endblock %}

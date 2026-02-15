@@ -1,23 +1,73 @@
 {% extends "iam/base.html" %}
 
 {% block title %}Dashboard · Contro{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block top_actions %}
+  <a class="button secondary" href="{% url 'content:type_list' %}">Manage Schemas</a>
+  <a class="button" href="{% url 'content:type_list' %}">New Content Type</a>
+{% endblock %}
 
 {% block content %}
-  <div class="nav">
-    <div>
-      <div class="title">Contro Dashboard</div>
-      <div class="subtitle">Welcome back, {{ request.user.get_full_name }}</div>
-    </div>
-    <form action="{% url 'iam:logout' %}" method="post">
-      {% csrf_token %}
-      <button class="button danger" type="submit">Logout</button>
-    </form>
+  <div class="card" style="margin-bottom: var(--space-3);">
+    <div class="topbar-title">Welcome back, {{ request.user.get_full_name }}</div>
+    <div class="subtitle">Here’s a snapshot of what’s happening in your CMS.</div>
   </div>
 
-  <div class="card">
-    <div class="title">Quick Actions</div>
-    <div class="subtitle">Manage schemas and content.</div>
-    <p><a href="{% url 'content:type_list' %}">Content Types</a></p>
-    <p><a href="{% url 'media:list' %}">Media Library</a></p>
+  <div class="kpi-grid" style="margin-bottom: var(--space-3);">
+    <div class="kpi">
+      <div class="kpi-label">Content Types</div>
+      <div class="kpi-value">--</div>
+      <div class="muted">Schemas defined</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total Entries</div>
+      <div class="kpi-value">--</div>
+      <div class="muted">Across all types</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Drafts</div>
+      <div class="kpi-value">--</div>
+      <div class="muted">Awaiting publish</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Media Assets</div>
+      <div class="kpi-value">--</div>
+      <div class="muted">In library</div>
+    </div>
+  </div>
+
+  <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+    <div class="card">
+      <div class="topbar-title">Quick Actions</div>
+      <div class="subtitle">Jump into the most common tasks.</div>
+      <div style="display: grid; gap: var(--space-1);">
+        <a class="nav-link" href="{% url 'content:type_list' %}">Manage Content Types</a>
+        <a class="nav-link" href="{% url 'media:list' %}">Open Media Library</a>
+        <a class="nav-link" href="/admin/">Open Django Admin</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="topbar-title">Publishing Flow</div>
+      <div class="subtitle">Keep drafts moving with visibility controls.</div>
+      <details>
+        <summary>View advanced workflow tips</summary>
+        <div style="margin-top: var(--space-1);" class="muted">
+          Use draft status to stage content, then publish when ready. Surface draft counts in your
+          review process to keep content on schedule.
+        </div>
+      </details>
+    </div>
+
+    <div class="card">
+      <div class="topbar-title">API Status</div>
+      <div class="subtitle">Monitor integration readiness.</div>
+      <div class="muted">REST and GraphQL endpoints are active.</div>
+      <div style="margin-top: var(--space-2); display: flex; gap: var(--space-1);">
+        <span class="nav-pill">REST</span>
+        <span class="nav-pill">GraphQL</span>
+      </div>
+    </div>
   </div>
 {% endblock %}
