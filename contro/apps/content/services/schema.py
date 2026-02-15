@@ -205,7 +205,7 @@ def sync_schema(content_type: ContentTypeDefinition, _visited: set[str] | None =
 
     relation_targets = content_type.fields.filter(
         field_type__in=[ContentFieldDefinition.FIELD_FK, ContentFieldDefinition.FIELD_M2M]
-    ).select_related(\"relation_target\")
+    ).select_related("relation_target")
     for field_def in relation_targets:
         if field_def.relation_target and field_def.relation_target.slug != content_type.slug:
             sync_schema(field_def.relation_target, _visited=_visited)

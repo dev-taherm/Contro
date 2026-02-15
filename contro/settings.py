@@ -1,4 +1,6 @@
 from pathlib import Path
+from datetime import timedelta
+import re
 
 import environ
 
@@ -141,11 +143,38 @@ REST_FRAMEWORK = {
     ),
 }
 
+# JWT duration parsing
+_DURATION_RE = re.compile(r"^(?P<value>\\d+)(?P<unit>[smhd])$")
+
+
+def _parse_duration(value: str, fallback: timedelta) -> timedelta:
+    if isinstance(value, timedelta):
+        return value
+    if value is None:
+        return fallback
+    if isinstance(value, int):
+        return timedelta(seconds=value)
+    match = _DURATION_RE.match(str(value).strip())
+    if not match:
+        return fallback
+    amount = int(match.group("value"))
+    unit = match.group("unit")
+    if unit == "s":
+        return timedelta(seconds=amount)
+    if unit == "m":
+        return timedelta(minutes=amount)
+    if unit == "h":
+        return timedelta(hours=amount)
+    if unit == "d":
+        return timedelta(days=amount)
+    return fallback
+
+
 # SimpleJWT
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
-    "ACCESS_TOKEN_LIFETIME": env.timedelta("JWT_ACCESS_TTL", default="15m"),
-    "REFRESH_TOKEN_LIFETIME": env.timedelta("JWT_REFRESH_TTL", default="7d"),
+    "ACCESS_TOKEN_LIFETIME": _parse_duration(env("JWT_ACCESS_TTL", default="15m"), timedelta(minutes=15)),
+    "REFRESH_TOKEN_LIFETIME": _parse_duration(env("JWT_REFRESH_TTL", default="7d"), timedelta(days=7)),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
