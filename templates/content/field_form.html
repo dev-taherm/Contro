@@ -15,57 +15,57 @@
     <form method="post">
       {% csrf_token %}
       {{ form.non_field_errors }}
-      <div class="form-row">
-        <label for="id_name">Name</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_name">Name</label>
         {{ form.name }}
         {{ form.name.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_slug">Slug</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_slug">Slug</label>
         {{ form.slug }}
         {{ form.slug.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_field_type">Field type</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_field_type">Field type</label>
         {{ form.field_type }}
         {{ form.field_type.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_required">Required</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_required">Required</label>
         {{ form.required }}
         {{ form.required.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_unique">Unique</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_unique">Unique</label>
         {{ form.unique }}
         {{ form.unique.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_default_value">Default value (JSON)</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_default_value">Default value (JSON)</label>
         {{ form.default_value }}
         {{ form.default_value.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_metadata">Metadata (JSON)</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_metadata">Metadata (JSON)</label>
         {{ form.metadata }}
         {{ form.metadata.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_relation_target">Relation target</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_relation_target">Relation target</label>
         {{ form.relation_target }}
         {{ form.relation_target.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_related_name">Related name</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_related_name">Related name</label>
         {{ form.related_name }}
         {{ form.related_name.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_order">Order</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_order">Order</label>
         {{ form.order }}
         {{ form.order.errors }}
       </div>
-      <button class="button" type="submit">Save</button>
+      <button class="btn btn-primary btn-premium" type="submit">Save</button>
     </form>
   </div>
 {% endblock %}

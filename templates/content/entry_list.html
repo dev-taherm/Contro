@@ -14,7 +14,7 @@
 
   <div class="card">
     {% if entries %}
-      <table style="width:100%; border-collapse: collapse;">
+      <table class="table table-premium align-middle" style="width:100%; border-collapse: collapse;">
         <thead>
           <tr style="text-align:left; border-bottom: 1px solid #1f2937;">
             <th style="padding: 8px;">ID</th>
@@ -37,19 +37,19 @@
               <td style="padding: 8px;">{{ entry.published_at|default:"-" }}</td>
               <td style="padding: 8px;">
                 <a href="{% url 'content:entry_edit' content_type.pk entry.id %}">Edit</a>
-                <form method="post" action="{% url 'content:entry_delete' content_type.pk entry.id %}" style="display:inline;">
+                <form method="post" action="{% url 'content:entry_delete' content_type.pk entry.id %}" class="d-inline">
                   {% csrf_token %}
-                  <button class="button danger" type="submit">Delete</button>
+                  <button class="btn btn-outline-danger btn-premium btn-sm" type="submit">Delete</button>
                 </form>
                 {% if entry.status == "published" %}
-                  <form method="post" action="{% url 'content:entry_unpublish' content_type.pk entry.id %}" style="display:inline;">
+                  <form method="post" action="{% url 'content:entry_unpublish' content_type.pk entry.id %}" class="d-inline">
                     {% csrf_token %}
-                    <button class="button" type="submit">Unpublish</button>
+                    <button class="btn btn-outline-primary btn-premium btn-sm" type="submit">Unpublish</button>
                   </form>
                 {% else %}
-                  <form method="post" action="{% url 'content:entry_publish' content_type.pk entry.id %}" style="display:inline;">
+                  <form method="post" action="{% url 'content:entry_publish' content_type.pk entry.id %}" class="d-inline">
                     {% csrf_token %}
-                    <button class="button" type="submit">Publish</button>
+                    <button class="btn btn-primary btn-premium btn-sm" type="submit">Publish</button>
                   </form>
                 {% endif %}
               </td>

@@ -4,347 +4,263 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Contro Admin{% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
     <style>
       :root {
-        --bg: #0b1220;
-        --surface: #101a2b;
-        --panel: #151f33;
-        --text: #e6ecf5;
-        --muted: #9fb1c6;
-        --accent: #6ee7b7;
-        --accent-strong: #10b981;
-        --danger: #f87171;
-        --warning: #fbbf24;
-        --border: #24324a;
-        --shadow: 0 18px 50px rgba(7, 10, 18, 0.45);
-        --radius-sm: 8px;
+        --bs-body-font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+        --bs-body-bg: #f8f9fa;
+        --bs-body-color: #0f172a;
+        --bs-primary: #0077b6;
+        --bs-border-color: rgba(0, 0, 0, 0.05);
+        --radius-lg: 18px;
         --radius-md: 12px;
-        --radius-lg: 16px;
-        --space-1: 8px;
-        --space-2: 16px;
-        --space-3: 24px;
-        --space-4: 32px;
-        --space-5: 40px;
+        --glass: linear-gradient(135deg, rgba(0, 119, 182, 0.12), rgba(0, 119, 182, 0.02));
       }
 
-      @media (prefers-color-scheme: light) {
+      @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #f5f7fb;
-          --surface: #ffffff;
-          --panel: #f1f4f9;
-          --text: #111827;
-          --muted: #5a6b86;
-          --accent: #0ea5e9;
-          --accent-strong: #0284c7;
-          --danger: #dc2626;
-          --warning: #d97706;
-          --border: #d6dde8;
-          --shadow: 0 12px 36px rgba(15, 23, 42, 0.12);
+          --bs-body-bg: #0b1721;
+          --bs-body-color: #e2e8f0;
+          --bs-border-color: rgba(255, 255, 255, 0.1);
         }
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
       body {
-        margin: 0;
-        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
-        background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 40%),
-          radial-gradient(circle at top right, rgba(16, 185, 129, 0.18), transparent 45%),
-          var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .app-shell {
-        display: grid;
-        grid-template-columns: 260px 1fr;
-        min-height: 100vh;
+        letter-spacing: -0.01em;
       }
 
       .sidebar {
-        background: var(--surface);
-        border-right: 1px solid var(--border);
-        padding: var(--space-4) var(--space-3);
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-4);
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 260px;
+        background: #ffffff;
+        border-right: 1px solid var(--bs-border-color);
+        padding: 24px 18px;
+        z-index: 1030;
       }
 
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: var(--space-2);
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        font-size: 18px;
+      @media (prefers-color-scheme: dark) {
+        .sidebar {
+          background: #111c27;
+        }
       }
 
-      .brand-badge {
-        width: 36px;
-        height: 36px;
-        border-radius: var(--radius-sm);
-        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-        display: grid;
-        place-items: center;
-        color: #031314;
-        font-weight: 800;
+      .sidebar .nav-link {
+        border-radius: 12px;
+        color: inherit;
+        font-weight: 500;
       }
 
-      .nav-group {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-1);
+      .sidebar .nav-link:hover {
+        background: rgba(0, 119, 182, 0.08);
+        color: var(--bs-primary);
       }
 
-      .nav-label {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-        margin-bottom: var(--space-1);
+      .main-content {
+        margin-left: 260px;
+        min-height: 100vh;
       }
 
-      .nav-link {
-        padding: 10px 12px;
-        border-radius: var(--radius-sm);
-        color: var(--text);
-        font-weight: 600;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: var(--space-1);
-        transition: background 0.2s ease;
-      }
-
-      .nav-link:hover {
-        background: var(--panel);
-      }
-
-      .nav-pill {
-        background: rgba(16, 185, 129, 0.16);
-        color: var(--accent);
-        font-size: 12px;
-        padding: 2px 8px;
-        border-radius: 999px;
-      }
-
-      .main {
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-      }
-
-      .topbar {
-        padding: var(--space-3) var(--space-4);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid var(--border);
-        background: rgba(16, 24, 39, 0.4);
-        backdrop-filter: blur(12px);
-      }
-
-      .topbar-title {
-        font-size: 20px;
-        font-weight: 600;
-      }
-
-      .topbar-actions {
-        display: flex;
-        gap: var(--space-2);
-        align-items: center;
-      }
-
-      .button {
-        background: var(--accent);
-        color: #041011;
-        border: none;
-        padding: 10px 16px;
-        border-radius: var(--radius-sm);
-        font-weight: 600;
-        cursor: pointer;
-      }
-
-      .button.secondary {
-        background: transparent;
-        color: var(--text);
-        border: 1px solid var(--border);
-      }
-
-      .button.danger {
-        background: var(--danger);
-        color: #2b0b0b;
-      }
-
-      .content {
-        padding: var(--space-4);
-      }
-
-      .card {
-        background: var(--panel);
-        border: 1px solid var(--border);
+      .bento-card {
+        border: 1px solid var(--bs-border-color);
         border-radius: var(--radius-lg);
-        padding: var(--space-3);
-        box-shadow: var(--shadow);
+        background: #ffffff;
       }
 
-      .card-grid {
-        display: grid;
-        gap: var(--space-3);
+      @media (prefers-color-scheme: dark) {
+        .bento-card {
+          background: #111c27;
+        }
       }
 
-      .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: var(--space-3);
-      }
-
-      .kpi {
-        padding: var(--space-3);
-        border-radius: var(--radius-md);
-        background: var(--surface);
-        border: 1px solid var(--border);
-      }
-
-      .kpi-label {
-        color: var(--muted);
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
+      .kpi-card {
+        background: var(--glass);
+        backdrop-filter: blur(14px);
       }
 
       .kpi-value {
         font-size: 28px;
-        font-weight: 700;
-        margin-top: var(--space-1);
+        font-weight: 600;
       }
 
-      .subtitle {
-        color: var(--muted);
-        margin-top: var(--space-1);
+      .table-premium th,
+      .table-premium td {
+        border-color: var(--bs-border-color);
+        padding: 12px 16px;
       }
 
-      .form-row {
-        margin-bottom: var(--space-2);
+      .table-premium thead th {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #64748b;
       }
 
-      label {
-        display: block;
-        margin-bottom: 6px;
-        font-size: 14px;
-        color: var(--muted);
+      .btn-premium {
+        border-radius: 12px;
+        font-weight: 600;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        background: rgba(248, 249, 250, 0.9);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--bs-border-color);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .topbar {
+          background: rgba(11, 23, 33, 0.8);
+        }
+      }
+
+      .form-control,
+      .form-select {
+        border-radius: 10px;
       }
 
       input,
-      textarea,
-      select {
+      select,
+      textarea {
         width: 100%;
+        border-radius: 10px;
+        border: 1px solid var(--bs-border-color);
         padding: 10px 12px;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--border);
-        background: rgba(5, 10, 20, 0.25);
-        color: var(--text);
+        background: rgba(255, 255, 255, 0.8);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
       }
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
+      @media (prefers-color-scheme: dark) {
+        input,
+        select,
+        textarea {
+          background: rgba(15, 23, 42, 0.7);
+          color: var(--bs-body-color);
+        }
       }
 
-      th,
-      td {
-        text-align: left;
-        padding: var(--space-1);
-        border-bottom: 1px solid var(--border);
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: rgba(0, 119, 182, 0.5);
+        box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
       }
 
-      .muted {
-        color: var(--muted);
+      .form-label {
+        font-weight: 500;
+        color: #475569;
       }
 
-      details {
-        background: var(--surface);
+      @media (prefers-color-scheme: dark) {
+        .form-label {
+          color: #cbd5f5;
+        }
+      }
+
+      .table-premium {
+        border: 1px solid var(--bs-border-color);
         border-radius: var(--radius-md);
-        padding: var(--space-2);
-        border: 1px solid var(--border);
+        overflow: hidden;
       }
 
-      .error {
-        color: var(--danger);
-        margin: 8px 0 0;
+      .table-premium th,
+      .table-premium td {
+        border-color: var(--bs-border-color);
+        padding: 12px 16px;
       }
 
-      @media (max-width: 960px) {
-        .app-shell {
-          grid-template-columns: 1fr;
+      .table-premium thead th {
+        background: rgba(0, 119, 182, 0.06);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #64748b;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .table-premium thead th {
+          background: rgba(0, 119, 182, 0.18);
+          color: #cbd5f5;
+        }
+      }
+
+      .table-premium tbody tr:hover {
+        background: rgba(0, 119, 182, 0.05);
+      }
+
+      @media (max-width: 991px) {
+        .sidebar {
+          position: static;
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid var(--bs-border-color);
         }
 
-        .sidebar {
-          flex-direction: row;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: var(--space-2);
-          border-right: none;
-          border-bottom: 1px solid var(--border);
+        .main-content {
+          margin-left: 0;
         }
       }
     </style>
   </head>
-  <body>
+  <body class="bg-body">
     {% block shell %}
-      <div class="app-shell">
-        <aside class="sidebar">
-          <div class="brand">
-            <div class="brand-badge">C</div>
-            Contro
+      <aside class="sidebar d-flex flex-column gap-4">
+        <div class="d-flex align-items-center gap-2 fw-semibold">
+          <div class="bg-primary text-white rounded-3 d-grid place-items-center" style="width: 36px; height: 36px;">
+            C
           </div>
+          Contro
+        </div>
 
-          <div class="nav-group">
-            <div class="nav-label">Overview</div>
+        <div>
+          <div class="text-uppercase text-muted small mb-2">Overview</div>
+          <nav class="nav flex-column gap-1">
             <a class="nav-link" href="{% url 'iam:dashboard' %}">Dashboard</a>
-            <a class="nav-link" href="{% url 'content:type_list' %}">
-              Content Types
-              <span class="nav-pill">Schemas</span>
-            </a>
+            <a class="nav-link" href="{% url 'content:type_list' %}">Content Types</a>
             <a class="nav-link" href="{% url 'media:list' %}">Media Library</a>
-          </div>
+          </nav>
+        </div>
 
-          <div class="nav-group">
-            <div class="nav-label">System</div>
+        <div>
+          <div class="text-uppercase text-muted small mb-2">System</div>
+          <nav class="nav flex-column gap-1">
             <a class="nav-link" href="/admin/">Django Admin</a>
             <form method="post" action="{% url 'iam:logout' %}">
               {% csrf_token %}
-              <button class="button secondary" type="submit" style="width: 100%;">Logout</button>
+              <button class="btn btn-outline-secondary btn-premium w-100" type="submit">Logout</button>
             </form>
-          </div>
-        </aside>
-
-        <div class="main">
-          <div class="topbar">
-            <div class="topbar-title">{% block page_title %}Dashboard{% endblock %}</div>
-            <div class="topbar-actions">
-              {% block top_actions %}{% endblock %}
-            </div>
-          </div>
-
-          <main class="content">
-            {% if messages %}
-              <div class="card" style="margin-bottom: var(--space-3);">
-                {% for message in messages %}
-                  <div class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
-                {% endfor %}
-              </div>
-            {% endif %}
-            {% block content %}{% endblock %}
-          </main>
+          </nav>
         </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="topbar px-4 py-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="h5 mb-0">{% block page_title %}Dashboard{% endblock %}</h1>
+            <div class="d-flex gap-2">{% block top_actions %}{% endblock %}</div>
+          </div>
+        </div>
+
+        <main class="container-fluid py-4 px-4">
+          {% if messages %}
+            <div class="bento-card p-3 mb-3">
+              {% for message in messages %}
+                <div class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% block content %}{% endblock %}
+        </main>
       </div>
     {% endblock %}
   </body>

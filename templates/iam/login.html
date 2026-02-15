@@ -3,37 +3,39 @@
 {% block title %}Login · Contro{% endblock %}
 
 {% block shell %}
-  <div style="min-height: 100vh; display: grid; place-items: center; padding: 32px;">
-    <div class="card" style="max-width: 480px; width: 100%;">
-      <div class="brand" style="margin-bottom: 16px;">
-        <div class="brand-badge">C</div>
+  <div class="min-vh-100 d-flex align-items-center justify-content-center px-4">
+    <div class="bento-card p-4" style="max-width: 440px; width: 100%;">
+      <div class="d-flex align-items-center gap-2 mb-3 fw-semibold">
+        <div class="bg-primary text-white rounded-3 d-grid place-items-center" style="width: 36px; height: 36px;">
+          C
+        </div>
         Contro
       </div>
-      <div class="topbar-title">Sign in</div>
-      <div class="subtitle">Access the CMS dashboard.</div>
+      <h1 class="h4 mb-2">Sign in</h1>
+      <p class="text-muted mb-4">Access the CMS dashboard.</p>
 
       <form method="post" novalidate>
         {% csrf_token %}
-        <div class="form-row">
-          <label for="id_email">Email</label>
+        <div class="mb-3">
+          <label class="form-label" for="id_email">Email</label>
           {{ form.email }}
           {% if form.email.errors %}
-            <div class="error">{{ form.email.errors.0 }}</div>
+            <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
           {% endif %}
         </div>
-        <div class="form-row">
-          <label for="id_password">Password</label>
+        <div class="mb-3">
+          <label class="form-label" for="id_password">Password</label>
           {{ form.password }}
           {% if form.password.errors %}
-            <div class="error">{{ form.password.errors.0 }}</div>
+            <div class="text-danger small mt-1">{{ form.password.errors.0 }}</div>
           {% endif %}
         </div>
         {% if messages %}
           {% for message in messages %}
-            <div class="error">{{ message }}</div>
+            <div class="text-danger small mb-2">{{ message }}</div>
           {% endfor %}
         {% endif %}
-        <button class="button" type="submit">Login</button>
+        <button class="btn btn-primary btn-premium w-100" type="submit">Login</button>
       </form>
     </div>
   </div>

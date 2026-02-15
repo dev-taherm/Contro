@@ -4,69 +4,80 @@
 {% block page_title %}Dashboard Overview{% endblock %}
 
 {% block top_actions %}
-  <a class="button secondary" href="{% url 'content:type_list' %}">Manage Schemas</a>
-  <a class="button" href="{% url 'content:type_list' %}">New Content Type</a>
+  <a class="btn btn-outline-primary btn-premium" href="{% url 'content:type_list' %}">Manage Schemas</a>
+  <a class="btn btn-primary btn-premium" href="{% url 'content:type_list' %}">New Content Type</a>
 {% endblock %}
 
 {% block content %}
-  <div class="card" style="margin-bottom: var(--space-3);">
-    <div class="topbar-title">Welcome back, {{ request.user.get_full_name }}</div>
-    <div class="subtitle">Here’s a snapshot of what’s happening in your CMS.</div>
+  <div class="bento-card p-4 mb-4">
+    <h2 class="h5 mb-1">Welcome back, {{ request.user.get_full_name }}</h2>
+    <p class="text-muted mb-0">Here’s a snapshot of what’s happening in your CMS.</p>
   </div>
 
-  <div class="kpi-grid" style="margin-bottom: var(--space-3);">
-    <div class="kpi">
-      <div class="kpi-label">Content Types</div>
-      <div class="kpi-value">--</div>
-      <div class="muted">Schemas defined</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Total Entries</div>
-      <div class="kpi-value">--</div>
-      <div class="muted">Across all types</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Drafts</div>
-      <div class="kpi-value">--</div>
-      <div class="muted">Awaiting publish</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Media Assets</div>
-      <div class="kpi-value">--</div>
-      <div class="muted">In library</div>
-    </div>
-  </div>
-
-  <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-    <div class="card">
-      <div class="topbar-title">Quick Actions</div>
-      <div class="subtitle">Jump into the most common tasks.</div>
-      <div style="display: grid; gap: var(--space-1);">
-        <a class="nav-link" href="{% url 'content:type_list' %}">Manage Content Types</a>
-        <a class="nav-link" href="{% url 'media:list' %}">Open Media Library</a>
-        <a class="nav-link" href="/admin/">Open Django Admin</a>
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="bento-card kpi-card p-3 h-100">
+        <div class="text-muted small text-uppercase">Content Types</div>
+        <div class="kpi-value">--</div>
+        <div class="text-muted">Schemas defined</div>
       </div>
     </div>
-
-    <div class="card">
-      <div class="topbar-title">Publishing Flow</div>
-      <div class="subtitle">Keep drafts moving with visibility controls.</div>
-      <details>
-        <summary>View advanced workflow tips</summary>
-        <div style="margin-top: var(--space-1);" class="muted">
-          Use draft status to stage content, then publish when ready. Surface draft counts in your
-          review process to keep content on schedule.
-        </div>
-      </details>
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="bento-card kpi-card p-3 h-100">
+        <div class="text-muted small text-uppercase">Total Entries</div>
+        <div class="kpi-value">--</div>
+        <div class="text-muted">Across all types</div>
+      </div>
     </div>
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="bento-card kpi-card p-3 h-100">
+        <div class="text-muted small text-uppercase">Drafts</div>
+        <div class="kpi-value">--</div>
+        <div class="text-muted">Awaiting publish</div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="bento-card kpi-card p-3 h-100">
+        <div class="text-muted small text-uppercase">Media Assets</div>
+        <div class="kpi-value">--</div>
+        <div class="text-muted">In library</div>
+      </div>
+    </div>
+  </div>
 
-    <div class="card">
-      <div class="topbar-title">API Status</div>
-      <div class="subtitle">Monitor integration readiness.</div>
-      <div class="muted">REST and GraphQL endpoints are active.</div>
-      <div style="margin-top: var(--space-2); display: flex; gap: var(--space-1);">
-        <span class="nav-pill">REST</span>
-        <span class="nav-pill">GraphQL</span>
+  <div class="row g-3">
+    <div class="col-12 col-lg-5">
+      <div class="bento-card p-4 h-100">
+        <h3 class="h6 mb-2">Quick Actions</h3>
+        <p class="text-muted mb-3">Jump into the most common tasks.</p>
+        <div class="d-grid gap-2">
+          <a class="btn btn-outline-primary btn-premium" href="{% url 'content:type_list' %}">Manage Content Types</a>
+          <a class="btn btn-outline-primary btn-premium" href="{% url 'media:list' %}">Open Media Library</a>
+          <a class="btn btn-outline-primary btn-premium" href="/admin/">Open Django Admin</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-4">
+      <div class="bento-card p-4 h-100">
+        <h3 class="h6 mb-2">Publishing Flow</h3>
+        <p class="text-muted mb-3">Keep drafts moving with visibility controls.</p>
+        <details>
+          <summary class="fw-semibold">View advanced workflow tips</summary>
+          <p class="text-muted mt-2 mb-0">
+            Use draft status to stage content, then publish when ready. Surface draft counts in your
+            review process to keep content on schedule.
+          </p>
+        </details>
+      </div>
+    </div>
+    <div class="col-12 col-lg-3">
+      <div class="bento-card p-4 h-100">
+        <h3 class="h6 mb-2">API Status</h3>
+        <p class="text-muted mb-3">Monitor integration readiness.</p>
+        <div class="d-flex flex-column gap-2">
+          <span class="badge text-bg-primary">REST</span>
+          <span class="badge text-bg-primary">GraphQL</span>
+        </div>
       </div>
     </div>
   </div>

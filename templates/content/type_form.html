@@ -15,37 +15,37 @@
     <form method="post">
       {% csrf_token %}
       {{ form.non_field_errors }}
-      <div class="form-row">
-        <label for="id_name">Name</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_name">Name</label>
         {{ form.name }}
         {{ form.name.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_slug">Slug</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_slug">Slug</label>
         {{ form.slug }}
         {{ form.slug.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_plural_name">Plural name</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_plural_name">Plural name</label>
         {{ form.plural_name }}
         {{ form.plural_name.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_description">Description</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_description">Description</label>
         {{ form.description }}
         {{ form.description.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_metadata">Metadata (JSON)</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_metadata">Metadata (JSON)</label>
         {{ form.metadata }}
         {{ form.metadata.errors }}
       </div>
-      <div class="form-row">
-        <label for="id_is_active">Active</label>
+      <div class="mb-3">
+        <label class="form-label" for="id_is_active">Active</label>
         {{ form.is_active }}
         {{ form.is_active.errors }}
       </div>
-      <button class="button" type="submit">Save</button>
+      <button class="btn btn-primary btn-premium" type="submit">Save</button>
     </form>
   </div>
 

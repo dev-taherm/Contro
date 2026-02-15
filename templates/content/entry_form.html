@@ -11,19 +11,19 @@
     <div>
       <a class="button" href="{% url 'content:entry_list' content_type.pk %}">Back to entries</a>
       {% if entry %}
-        <form method="post" action="{% url 'content:entry_delete' content_type.pk entry.id %}" style="display:inline;">
+        <form method="post" action="{% url 'content:entry_delete' content_type.pk entry.id %}" class="d-inline">
           {% csrf_token %}
-          <button class="button danger" type="submit">Delete</button>
+          <button class="btn btn-outline-danger btn-premium btn-sm" type="submit">Delete</button>
         </form>
         {% if entry.status == "published" %}
-          <form method="post" action="{% url 'content:entry_unpublish' content_type.pk entry.id %}" style="display:inline;">
+          <form method="post" action="{% url 'content:entry_unpublish' content_type.pk entry.id %}" class="d-inline">
             {% csrf_token %}
-            <button class="button" type="submit">Unpublish</button>
+            <button class="btn btn-outline-primary btn-premium btn-sm" type="submit">Unpublish</button>
           </form>
         {% else %}
-          <form method="post" action="{% url 'content:entry_publish' content_type.pk entry.id %}" style="display:inline;">
+          <form method="post" action="{% url 'content:entry_publish' content_type.pk entry.id %}" class="d-inline">
             {% csrf_token %}
-            <button class="button" type="submit">Publish</button>
+            <button class="btn btn-primary btn-premium btn-sm" type="submit">Publish</button>
           </form>
         {% endif %}
       {% endif %}
@@ -35,13 +35,13 @@
       {% csrf_token %}
       {{ form.non_field_errors }}
       {% for field in form %}
-        <div class="form-row">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <div class="mb-3">
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
           {{ field }}
           {{ field.errors }}
         </div>
       {% endfor %}
-      <button class="button" type="submit">Save</button>
+      <button class="btn btn-primary btn-premium" type="submit">Save</button>
     </form>
   </div>
 {% endblock %}
